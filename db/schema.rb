@@ -31,12 +31,11 @@ ActiveRecord::Schema.define(version: 2018_07_26_181505) do
 
   create_table "likes", force: :cascade do |t|
     t.integer "user_id"
-    t.integer "post_id"
-    t.integer "comment_id"
+    t.string "imageable_type"
+    t.integer "imageable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["comment_id"], name: "index_likes_on_comment_id"
-    t.index ["post_id"], name: "index_likes_on_post_id"
+    t.index ["imageable_type", "imageable_id"], name: "index_likes_on_imageable_type_and_imageable_id"
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
@@ -58,17 +57,24 @@ ActiveRecord::Schema.define(version: 2018_07_26_181505) do
   end
 
   create_table "private_messages", force: :cascade do |t|
+    t.integer "sender_id"
+    t.integer "recipient_id"
+    t.string "content"
+    t.datetime "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["recipient_id"], name: "index_private_messages_on_recipient_id"
+    t.index ["sender_id"], name: "index_private_messages_on_sender_id"
   end
 
   create_table "replies", force: :cascade do |t|
     t.integer "user_id"
-    t.integer "post_id"
+    t.string "repliable_type"
+    t.integer "repliable_id"
     t.string "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["post_id"], name: "index_replies_on_post_id"
+    t.index ["repliable_type", "repliable_id"], name: "index_replies_on_repliable_type_and_repliable_id"
     t.index ["user_id"], name: "index_replies_on_user_id"
   end
 

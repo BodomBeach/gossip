@@ -23,25 +23,9 @@ end
   post.assign_attributes({title: Faker::Pokemon.name, content: Faker::Lorem.sentence, date: Faker::Date.between_except(1.year.ago, 1.year.from_now, Date.today)})
   post.user = User.all.sample
   rand(1..5).times do
-    post.tag << Tag.all.sample
+    post.tags << Tag.all.sample
   end
   post.save
-end
-
-r = rand(0..20)
-
-r.times do
-  like = Like.new
-  like.post = Post.all.sample
-  like.user = User.all.sample
-  like.save
-end
-
-(20 - r).times do
-  like = Like.new
-  like.comment = Post.all.sample
-  like.user = User.all.sample
-  like.save
 end
 
 40.times do
@@ -50,4 +34,36 @@ end
   comment.user = User.all.sample
   comment.post = Post.all.sample
   comment.save
+end
+
+r = rand(0..20)
+
+r.times do
+  like = Like.new
+  like.imageable = Post.all.sample
+  like.user = User.all.sample
+  like.save
+end
+
+(20 - r).times do
+  like = Like.new
+  like.imageable = Comment.all.sample
+  like.user = User.all.sample
+  like.save
+end
+
+30.times do
+  reply = Reply.new
+  reply.assign_attributes({content: Faker::Lorem.sentence})
+  reply.user = User.all.sample
+  reply.repliable = Comment.all.sample
+  reply.save
+end
+
+20.times do
+ pm = PrivateMessage.new
+ pm.assign_attributes({content: Faker::Lorem.sentence, date: Faker::Date.between_except(1.year.ago, 1.year.from_now, Date.today)})
+ pm.sender = User.all.sample
+ pm.recipient = User.all.sample
+ pm.save
 end
